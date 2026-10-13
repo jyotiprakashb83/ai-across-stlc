@@ -1,69 +1,106 @@
 # AI Across the Software Testing Life Cycle (STLC)
 
-A lightweight, editable dashboard for tracking AI initiatives across the Software Testing Life Cycle. This project presents a visual STLC board where each testing phase can show initiative progress, status categories, tools/platforms in use, and business impact.
+A browser-based, editable dashboard for tracking AI initiatives across the software testing lifecycle. The app visualizes testing phases, initiative status, platform/tool usage, and business impact in a single, easy-to-manage board.
+
+![STLC Dashboard](https://img.shields.io/badge/Project-Editable%20Dashboard-0f172a?style=for-the-badge)
+![STLC](https://img.shields.io/badge/Focus-AI%20in%20STLC-3b82f6?style=for-the-badge)
+![HTML](https://img.shields.io/badge/Stack-HTML%20%2B%20CSS%20%2B%20JavaScript-22c55e?style=for-the-badge)
 
 ## Overview
 
-The dashboard is built as a single-page HTML application and allows users to:
+This project is built as a single-page HTML dashboard that helps QA leaders, test architects, and delivery teams monitor how AI is being used across the STLC.
 
-- View AI initiatives organized by STLC phase
-- Track initiative status using color-coded legend categories
-- Add, edit, and delete initiatives
-- Customize dashboard title and subtitle
-- Update platforms in use and business impact sections
-- Import/export dashboard data as JSON
-- Adjust font size and print to PDF
-- Reset the dashboard to the original dataset
+It includes:
 
-## Files
-
-- `STLC_Editable_Dashboard.html` – Main dashboard UI and logic
-- `data.json` – Default dataset used to populate the dashboard
-- `README.md` – Project documentation
-
-## How to use
-
-1. Open `STLC_Editable_Dashboard.html` in a browser.
-2. Use the gear icon in the bottom-right corner to access dashboard tools.
-3. Edit task entries, legend labels, or dashboard metadata as needed.
-4. Export or import JSON if you want to save or share a custom configuration.
-
-## Dashboard sections
-
-The dashboard includes:
-
-- Total AI initiatives count
+- Six STLC phases represented as cards
+- Initiative tracking by phase
+- Color-coded status legend
 - Overall status summary by count
-- STLC phase cards with initiative tasks
-- Status legend with clickable editing
-- Tools/platforms used
+- Tools/platforms in use section
 - Business impact summary
+- Data import/export as JSON
+- Editable dashboard configuration in the browser
+
+## Why this project
+
+Modern testing teams often need a quick view of AI adoption across requirements, design, test planning, execution, defect management, and release readiness. This dashboard helps teams centralize and review that information without requiring a backend or database.
 
 ## Features
 
-### Editable workflow
-- Add initiatives to any lifecycle phase
-- Update initiative ID and status
-- Edit initiative names directly from the UI
+### Interactive dashboard
+- View total initiative count at a glance
+- See overall status distribution by count
+- Expand each STLC phase and review its initiatives
+- Click any initiative to edit it
+- Add new initiatives directly from a phase card
 
 ### Customization
-- Rename dashboard title and subtitle
-- Modify status legend labels, colors, and symbols
-- Set platform and business impact values as line-separated lists
+- Update dashboard title and subtitle
+- Edit legend labels, colors, and symbols
+- Adjust platform/tool names and business impact values
+- Change font size for readability
+- Print the dashboard or save as PDF
 
 ### Data management
-- Save data in browser local storage
-- Export dashboard configuration to JSON
-- Import previously exported JSON files
-- Reset the dashboard to the bundled default data
+- Store changes in browser local storage
+- Export the dashboard configuration to JSON
+- Import a previously saved JSON file
+- Reset to the original bundled dataset
 
-### Presentation support
-- Resize text for readability
-- Print or save the dashboard as PDF
+### UX support
+- Responsive layout for desktop use
+- Clean card-based design
+- Lightweight implementation without framework dependencies
 
-## Example data source
+## Project files
 
-The project loads its initial configuration from `data.json` if available, and otherwise falls back to inline starter data. This makes the dashboard easy to customize without changing the main HTML file.
+- `STLC_Editable_Dashboard.html` - Main dashboard interface and application logic
+- `data.json` - Default dataset used to populate the dashboard
+- `README.md` - Project documentation
+
+## How to run
+
+1. Download or clone the repository.
+2. Open `STLC_Editable_Dashboard.html` in a browser.
+3. Use the gear icon in the bottom-right corner to access dashboard tools.
+
+No installation or server setup is required for the basic version.
+
+## How to use the dashboard
+
+### Edit an initiative
+- Click an initiative name in any phase card.
+- Update the initiative ID, status, or name.
+- Save the changes.
+
+### Add a new initiative
+- Click the `+ Add initiative` button in any phase card.
+- Fill in the initiative details.
+- Save it to the selected phase.
+
+### Edit dashboard settings
+- Click the gear icon.
+- Choose `Edit Dashboard`.
+- Update the title, subtitle, platform list, and impact list.
+
+### Import/export data
+- Use `Export JSON` to save the full dashboard state.
+- Use `Import JSON` to restore a previously exported dashboard configuration.
+
+## Dashboard structure
+
+The dashboard is organized into:
+
+- Header with title and subtitle
+- Top metrics panel
+- Overall status summary
+- STLC phase cards
+- Status summary and platform/impact sections
+- Floating toolbar for actions
+
+## Default data
+
+The app loads default data from `data.json` when available. If the file is unavailable, it falls back to inline starter data embedded in the HTML file. This makes it easy to customize without changing the main UI logic.
 
 ## Tech stack
 
@@ -71,12 +108,28 @@ The project loads its initial configuration from `data.json` if available, and o
 - CSS
 - JavaScript
 
-## Project purpose
+## Use cases
 
-This application is designed for QA leaders, test architects, and delivery teams who want a quick, visual view of where AI is being applied across the software testing lifecycle and how those initiatives are progressing.
+This dashboard is suitable for:
+
+- QA transformation programs
+- AI adoption tracking in testing teams
+- Release quality monitoring
+- STLC maturity reviews
+- Test strategy presentations
 
 ## License
 
-This project is provided for educational and demonstration purposes.
+This project is intended for educational, demo, and personal use.
 
-If you want, I can also help turn this into a more polished GitHub README with badges, screenshots, and deployment instructions.
+## Future enhancements
+
+Possible enhancements include:
+
+- Add drag-and-drop reordering of initiatives
+- Support categories and owners per initiative
+- Add charts and trend summaries
+- Convert to a React or Vue app
+- Add authentication and database-backed persistence
+
+If you would like, I can also help create a more advanced version of this dashboard with charts, export to PDF, and a backend-powered data store.
