@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Editable AI STLC Dashboard</title>
+  <style>
+    :root {
+      --navy: #0f172a;
+      --ink: #334155;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --primary: #3b82f6;
+      --font-scale: 1;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--ink);
+      font-size: calc(16px * var(--font-scale));
+      line-height: 1.5;
+    }
+
+    .app {
+      padding: 12px 24px;
+      min-width: 1200px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    .header-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .title-group {
+      width: 100%;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.15em;
+      /* 18.4px */
+      letter-spacing: -0.01em;
+      color: var(--navy);
+      font-weight: 800;
+      line-height: 1.3;
+      white-space: nowrap;
+    }
+
+    .subtitle {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.75em;
+      /* 12px */
+      font-weight: 500;
+      line-height: 1.4;
+      white-space: nowrap;
+    }
+
+    .top-metrics {
+      display: flex;
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .metric-card,
+    .overall,
+    .legend-card,
+    .bottom-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .legend-card {
+      padding: 8px 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .legend-title,
+    .overall-title,
+    .bottom-title {
+      font-size: 0.625em;
+      /* 10px */
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .legend-container {
+      display: flex;
+      gap: 12px;
+    }
+
+    .legend-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.6875em;
+      /* 11px */
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--navy);
+    }
+
+    .legend-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.5em;
+      /* 8px */
+      border: 2px solid currentColor;
+    }
+
+    .metric-card {
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .metric-num {
+      font-size: 2em;
+      /* 32px */
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1;
+    }
+
+    .metric-label {
+      font-weight: 700;
+      font-size: 0.625em;
+      /* 10px */
+      color: var(--muted);
+      line-height: 1.2;
+    }
+
+    .overall {
+      padding: 10px 16px;
+    }
+
+    .overall-grid {
+      display: flex;
+      gap: 16px;
+    }
+
+    .status-stat {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-right: 16px;
+      border-right: 1px solid var(--line);
+    }
+
+    .status-stat:last-child {
+      border-right: none;
+      padding-right: 0;
+    }
+
+    .status-stat .big {
+      font-size: 1.25em;
+      /* 20px */
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .status-stat .txt {
+      font-size: 0.625em;
+      /* 10px */
+      font-weight: 600;
+      color: var(--muted);
+      line-height: 1.3;
+    }
+
+    .phase-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .phase-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--card);
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    }
+
+    .phase-head {
+      padding: 10px 8px;
+      color: #fff;
+      font-size: 0.6875em;
+      /* 11px */
+      font-weight: 700;
+      text-align: center;
+      position: relative;
+      letter-spacing: 0.02em;
+    }
+
+    .phase-head.flow:after {
+      content: "";
+      position: absolute;
+      right: -12px;
+      top: 0;
+      border-top: 17px solid transparent;
+      border-bottom: 17px solid transparent;
+      border-left: 12px solid var(--phase-color);
+      z-index: 3;
+    }
+
+    .phase-head.flow:before {
+      content: "";
+      position: absolute;
+      right: -13px;
+      top: 0;
+      border-top: 17px solid transparent;
+      border-bottom: 17px solid transparent;
+      border-left: 12px solid var(--card);
+      z-index: 2;
+    }
+
+    .phase-body {
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .section-label {
+      font-size: 0.5625em;
+      /* 9px */
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 8px;
+      letter-spacing: 0.05em;
+    }
+
+    .task-list {
+      flex: 1;
+    }
+
+    .task {
+      display: grid;
+      grid-template-columns: 16px 28px 1fr 20px;
+      align-items: start;
+      font-size: 0.6875em;
+      /* 11px */
+      line-height: 1.3;
+      margin: 4px 0;
+      padding: 4px;
+      gap: 4px;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+
+    .task:hover {
+      background: var(--bg);
+    }
+
+    .task-status {
+      font-weight: 800;
+      text-align: center;
+      margin-top: 1px;
+    }
+
+    .task-id {
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .task-name {
+      font-weight: 500;
+      color: var(--navy);
+      cursor: pointer;
+    }
+
+    .task-actions {
+      display: flex;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .task:hover .task-actions {
+      opacity: 1;
+    }
+
+    .icon-btn {
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      padding: 0;
+      font-size: 1em;
+      color: var(--muted);
+    }
+
+    .icon-btn:hover {
+      color: var(--navy);
+    }
+
+    .tools {
+      border-top: 1px solid var(--line);
+      margin-top: 12px;
+      padding-top: 10px;
+    }
+
+    .tools .label {
+      font-size: 0.5625em;
+      /* 9px */
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .tools .text {
+      font-size: 0.625em;
+      /* 10px */
+      color: var(--ink);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    .add-btn {
+      margin-top: 8px;
+      width: 100%;
+      border: 1px dashed #cbd5e1;
+      background: transparent;
+      color: var(--muted);
+      border-radius: 6px;
+      font-size: 0.625em;
+      /* 10px */
+      padding: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .add-btn:hover {
+      background: var(--bg);
+      color: var(--navy);
+      border-color: #94a3b8;
+    }
+
+    .bottom {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1.5fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .bottom-card {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .bottom-title {
+      background: var(--navy);
+      color: #fff;
+      text-align: center;
+      padding: 6px;
+      margin: 0;
+      border-radius: 8px 8px 0 0;
+    }
+
+    .bottom-content {
+      padding: 12px 16px;
+      font-size: 0.6875em;
+      /* 11px */
+      flex: 1;
+    }
+
+    .status-summary {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .platforms,
+    .impact {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+    }
+
+    .chip {
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    .toolbar-container {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 30;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 8px;
+      background: var(--card);
+      padding: 8px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border: 1px solid var(--line);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+      transform-origin: right center;
+    }
+
+    .toolbar.collapsed {
+      transform: translateX(20px) scaleX(0.95);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .toolbar-toggle {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: white;
+      border: none;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      line-height: 1;
+      z-index: 31;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .toolbar-toggle:hover {
+      background: #1e293b;
+      transform: scale(1.05);
+    }
+
+    .toolbar button {
+      border: none;
+      background: var(--navy);
+      color: #fff;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 0.75em;
+      /* 12px */
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .toolbar button:hover {
+      background: #1e293b;
+    }
+
+    .toolbar button.secondary {
+      background: var(--bg);
+      color: var(--navy);
+      border: 1px solid var(--line);
+    }
+
+    .toolbar button.secondary:hover {
+      background: #e2e8f0;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.5);
+      z-index: 50;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(2px);
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .dialog {
+      background: var(--card);
+      width: 460px;
+      max-height: 90vh;
+      overflow: auto;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    .dialog h3 {
+      margin: 0 0 16px;
+      color: var(--navy);
+      font-size: 1.25em;
+    }
+
+    .field {
+      margin: 12px 0;
+    }
+
+    .field label {
+      display: block;
+      font-size: 0.75em;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--ink);
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font: inherit;
+      font-size: 0.875em;
+      background: var(--bg);
+      transition: border-color 0.2s;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: var(--card);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .dialog-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .dialog-actions button {
+      border: none;
+      border-radius: 6px;
+      padding: 8px 16px;
+      font-weight: 600;
+      font-size: 0.875em;
+      cursor: pointer;
+    }
+
+    .primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .primary:hover {
+      background: #2563eb;
+    }
+
+    .danger {
+      background: #ef4444;
+      color: white;
+    }
+
+    .danger:hover {
+      background: #dc2626;
+    }
+
+    .ghost {
+      background: transparent;
+      color: var(--muted);
+    }
+
+    .ghost:hover {
+      background: var(--bg);
+      color: var(--navy);
+    }
+
+    .small-note {
+      font-size: 0.5625em;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    @media (max-width: 1300px) {
+      .app {
+        transform-origin: top left;
+      }
+    }
+
+    @media print {
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+      }
+
+      @page {
+        size: landscape;
+        margin: 0.25in;
+      }
+
+      body {
+        background: #fff !important;
+      }
+
+      .toolbar-container,
+      .modal,
+      .small-note,
+      .add-btn,
+      .task-actions {
+        display: none !important;
+      }
+
+      .app {
+        padding: 0 !important;
+        min-width: 0 !important;
+        max-width: none !important;
+      }
+
+      .phase-card,
+      .legend-card,
+      .metric-card,
+      .overall,
+      .bottom-card {
+        box-shadow: none !important;
+        break-inside: avoid;
+      }
+
+      .phase-grid {
+        gap: 8px;
+      }
+
+      .bottom {
+        gap: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <div class="header-container">
+      <div class="title-group">
+        <h1 id="title"></h1>
+        <div class="subtitle" id="subtitle"></div>
+      </div>
+      <div class="top-metrics">
+
+        <div class="metric-card">
+          <div class="metric-num" id="totalCount">0</div>
+          <div class="metric-label">TOTAL<br />AI INITIATIVES</div>
+        </div>
+        <div class="overall">
+          <div class="overall-title">OVERALL STATUS <span style="font-weight:500;text-transform:none;">(By Count)</span>
+          </div>
+          <div class="overall-grid" id="overallGrid"></div>
+        </div>
+        <div class="legend-card">
+          <div class="legend-title">STATUS LEGEND</div>
+          <div class="legend-container" id="legend"></div>
+          <div class="small-note">Click any legend item to edit.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-grid" id="phaseGrid"></div>
+
+    <div class="bottom">
+      <div class="bottom-card">
+        <div class="bottom-title">STATUS SUMMARY (By Count)</div>
+        <div class="bottom-content status-summary" id="bottomStatus"></div>
+      </div>
+      <div class="bottom-card">
+        <div class="bottom-title">AI PLATFORMS IN USE</div>
+        <div class="bottom-content platforms" id="platforms"></div>
+      </div>
+      <div class="bottom-card">
+        <div class="bottom-title">BUSINESS IMPACT</div>
+        <div class="bottom-content impact" id="impact"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toolbar-container">
+    <div class="toolbar collapsed" id="toolbar">
+      <button class="secondary" onclick="changeFont(-0.05)" title="Decrease font size">A−</button>
+      <button class="secondary" onclick="resetFont()" title="Reset font size">A</button>
+      <button class="secondary" onclick="changeFont(0.05)" title="Increase font size">A+</button>
+      <button class="secondary" onclick="printPDF()">Print / PDF</button>
+      <button class="secondary" onclick="document.getElementById('jsonImport').click()">Import JSON</button>
+      <button class="secondary" onclick="exportData()">Export JSON</button>
+      <button class="secondary" onclick="resetData()">Reset</button>
+      <button onclick="openSettings()">Edit Dashboard</button>
+      <input id="jsonImport" type="file" accept=".json,application/json" style="display:none"
+        onchange="importData(event)" />
+    </div>
+    <button class="toolbar-toggle" onclick="document.getElementById('toolbar').classList.toggle('collapsed')"
+      title="Toggle Tools">⚙</button>
+  </div>
+
+  <div class="modal" id="taskModal">
+    <div class="dialog">
+      <h3 id="taskModalTitle">Add Initiative</h3>
+      <div class="row">
+        <div class="field"><label>Initiative ID</label><input id="taskId" type="number" /></div>
+        <div class="field"><label>Status</label><select id="taskStatus"></select></div>
+      </div>
+      <div class="field"><label>Initiative</label><input id="taskName" /></div>
+      <input type="hidden" id="phaseId" />
+      <input type="hidden" id="taskOriginalId" />
+      <div class="dialog-actions">
+        <button class="ghost" onclick="closeModal('taskModal')">Cancel</button>
+        <button class="danger" id="deleteTaskBtn" onclick="deleteTask()">Delete</button>
+        <button class="primary" onclick="saveTask()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="legendModal">
+    <div class="dialog">
+      <h3>Edit Legend</h3>
+      <div class="field"><label>Label</label><input id="legendLabel" /></div>
+      <div class="row">
+        <div class="field"><label>Color</label><input id="legendColor" type="color" /></div>
+        <div class="field"><label>Symbol</label><input id="legendSymbol" maxlength="2" /></div>
+      </div>
+      <input type="hidden" id="legendKey" />
+      <div class="dialog-actions">
+        <button class="ghost" onclick="closeModal('legendModal')">Cancel</button>
+        <button class="primary" onclick="saveLegend()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="settingsModal">
+    <div class="dialog">
+      <h3>Edit Dashboard</h3>
+      <div class="field"><label>Title</label><input id="settingsTitle" /></div>
+      <div class="field"><label>Subtitle</label><input id="settingsSubtitle" /></div>
+      <div class="field"><label>Platforms in Use (one per line)</label><textarea id="settingsPlatforms"
+          rows="6"></textarea></div>
+      <div class="field"><label>Business Impact (one per line)</label><textarea id="settingsImpact" rows="6"></textarea>
+      </div>
+      <div class="dialog-actions">
+        <button class="ghost" onclick="closeModal('settingsModal')">Cancel</button>
+        <button class="primary" onclick="saveSettings()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let INITIAL_DATA = { "title": "AI ACROSS THE SOFTWARE TESTING LIFE CYCLE (STLC)", "subtitle": "AI initiatives driving QA productivity, quality intelligence, and release confidence", "phases": [{ "id": 1, "name": "REQUIREMENT ANALYSIS", "color": "#5A2CA0", "tools": "Jira • Confluence • BRD/PRD", "tasks": [{ "id": 11, "name": "AI Requirement Analyzer", "status": "complete" }, { "id": 12, "name": "Testability Analysis", "status": "progress" }, { "id": 13, "name": "Acceptance Criteria Validation", "status": "idea" }, { "id": 14, "name": "Requirement Risk Analysis", "status": "pilot" }] }, { "id": 2, "name": "TEST PLANNING", "color": "#3569C8", "tools": "Jira • Release Plan • QA KB", "tasks": [{ "id": 21, "name": "AI Test Strategy Generator", "status": "complete" }, { "id": 22, "name": "Scope Optimization", "status": "progress" }, { "id": 23, "name": "Risk-Based Planning", "status": "progress" }, { "id": 24, "name": "Execution Forecast", "status": "idea" }] }, { "id": 3, "name": "TEST CASE DESIGN", "color": "#2F7F9A", "tools": "Jira • Test Mgmt • Knowledge Base", "tasks": [{ "id": 31, "name": "AI Test Case Generation", "status": "complete" }, { "id": 32, "name": "Edge Case Generation", "status": "complete" }, { "id": 33, "name": "Defect-Based Scenarios", "status": "progress" }, { "id": 34, "name": "Duplicate Test Detection", "status": "progress" }, { "id": 35, "name": "Traceability Matrix", "status": "pilot" }] }, { "id": 4, "name": "TEST DATA PREPARATION", "color": "#4C8A3A", "tools": "DB • Synthetic Data • Data Rules", "tasks": [{ "id": 41, "name": "AI Test Data Generation", "status": "progress" }, { "id": 42, "name": "Dependency Analysis", "status": "progress" }, { "id": 43, "name": "Data Refresh Validation", "status": "complete" }] }, { "id": 5, "name": "ENVIRONMENT SETUP", "color": "#6F39B5", "tools": "CI/CD • APIs • Cloud", "tasks": [{ "id": 51, "name": "Environment Readiness Agent", "status": "complete" }, { "id": 52, "name": "Drift Detection", "status": "progress" }, { "id": 53, "name": "Deployment Validation", "status": "pilot" }] }, { "id": 6, "name": "TEST EXECUTION", "color": "#F28C2A", "tools": "SmartTest • Playwright • CI/CD", "tasks": [{ "id": 61, "name": "Change-Based Selection", "status": "complete" }, { "id": 62, "name": "Execution Planning", "status": "complete" }, { "id": 63, "name": "Parallel Optimization", "status": "progress" }, { "id": 64, "name": "Real-Time QA Health", "status": "progress" }, { "id": 65, "name": "Anomaly Detection", "status": "pilot" }] }, { "id": 7, "name": "DEFECT MANAGEMENT", "color": "#D94A4A", "tools": "Jira • Logs • Traces", "tasks": [{ "id": 71, "name": "AI Defect Creation", "status": "complete" }, { "id": 72, "name": "Defect Deduplication", "status": "progress" }, { "id": 73, "name": "Failure Classification", "status": "progress" }, { "id": 74, "name": "AI Root Cause Analysis", "status": "pilot" }] }, { "id": 8, "name": "AUTOMATION", "color": "#6B34BF", "tools": "Playwright • Selenium • GitHub", "tasks": [{ "id": 81, "name": "Script Generation", "status": "complete" }, { "id": 82, "name": "Framework-Aware Coding", "status": "progress" }, { "id": 83, "name": "Failure Fixing", "status": "complete" }, { "id": 84, "name": "Locator Healing", "status": "progress" }, { "id": 85, "name": "Code Review", "status": "progress" }] }, { "id": 9, "name": "REGRESSION TESTING", "color": "#3366CC", "tools": "Regression Suite • History • Risk Model", "tasks": [{ "id": 91, "name": "AI Regression Selection", "status": "complete" }, { "id": 92, "name": "Regression Risk Analysis", "status": "progress" }, { "id": 93, "name": "Failure Correlation", "status": "progress" }, { "id": 94, "name": "Suite Optimization", "status": "pilot" }] }, { "id": 10, "name": "REPORTING & ANALYSIS", "color": "#2D7F9E", "tools": "Dashboard • Metrics • Teams", "tasks": [{ "id": 101, "name": "Sprint Quality Analysis", "status": "complete" }, { "id": 102, "name": "Scope vs Failure Analysis", "status": "progress" }, { "id": 103, "name": "Quality Trend Analysis", "status": "progress" }, { "id": 104, "name": "Failure Pattern Mining", "status": "idea" }] }, { "id": 11, "name": "RELEASE SIGN-OFF", "color": "#4F8D42", "tools": "Jira • Git • Test Results", "tasks": [{ "id": 111, "name": "Release Readiness Analysis", "status": "complete" }, { "id": 112, "name": "Release Risk Assessment", "status": "progress" }, { "id": 113, "name": "Sign-off Assistant", "status": "pilot" }] }, { "id": 12, "name": "CONTINUOUS QUALITY", "color": "#DF4545", "tools": "Prod Defects • Quality KB • Observability", "tasks": [{ "id": 121, "name": "Production Feedback Loop", "status": "progress" }, { "id": 122, "name": "Quality Prediction / Early Warning", "status": "idea" }] }], "legends": { "complete": { "label": "Production / Complete", "color": "#63A84B", "symbol": "✓" }, "progress": { "label": "In Progress", "color": "#356ED3", "symbol": "○" }, "pilot": { "label": "Pilot", "color": "#F39A35", "symbol": "○" }, "idea": { "label": "Idea / Not Started", "color": "#E55353", "symbol": "○" } }, "platforms": ["Jira", "Confluence", "GitHub", "Playwright", "SmartTest", "CI/CD", "Teams", "Knowledge Base"], "impact": ["Earlier Risk Detection", "Less Regression Effort", "Faster Defect Resolution", "Faster Release Validation", "Reduced Manual Reporting", "Evidence-Based Decisions"] };
+    let data = null;
+
+    function save() { localStorage.setItem("stlc-dashboard-data", JSON.stringify(data)); render(); }
+    function esc(s) { return String(s ?? "").replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[m])) }
+    function counts() {
+      const c = {}; Object.keys(data.legends).forEach(k => c[k] = 0);
+      data.phases.forEach(p => p.tasks.forEach(t => c[t.status] = (c[t.status] || 0) + 1));
+      return c;
+    }
+    function render() {
+      document.getElementById("title").textContent = data.title;
+      document.getElementById("subtitle").textContent = data.subtitle;
+      const total = data.phases.reduce((a, p) => a + p.tasks.length, 0);
+      document.getElementById("totalCount").textContent = total;
+      const c = counts();
+
+      const legend = document.getElementById("legend"); legend.innerHTML = "";
+      Object.entries(data.legends).forEach(([k, v]) => {
+        const r = document.createElement("div"); r.className = "legend-row"; r.onclick = () => editLegend(k);
+        r.innerHTML = `<span class="legend-dot" style="color:${v.color}">${esc(v.symbol)}</span><span>${esc(v.label)}</span>`;
+        legend.appendChild(r);
+      });
+
+      const og = document.getElementById("overallGrid"); og.innerHTML = "";
+      Object.entries(data.legends).forEach(([k, v]) => {
+        const pct = total ? Math.round((c[k] || 0) * 100 / total) : 0;
+        const s = document.createElement("div"); s.className = "status-stat";
+        s.innerHTML = `<span class="legend-dot" style="color:${v.color}">${esc(v.symbol)}</span>
+      <span class="big" style="color:${v.color}">${c[k] || 0}</span>
+      <span class="txt">${esc(v.label)}<br/>(${pct}%)</span>`;
+        og.appendChild(s);
+      });
+
+      const pg = document.getElementById("phaseGrid"); pg.innerHTML = "";
+      data.phases.forEach((p, idx) => {
+        const card = document.createElement("div"); card.className = "phase-card";
+        const tasks = p.tasks.map(t => {
+          const lg = data.legends[t.status] || { color: "#777", symbol: "•" };
+          return `<div class="task">
+        <span class="task-status" style="color:${lg.color}">${esc(lg.symbol)}</span>
+        <span class="task-id">${esc(t.id)}</span>
+        <span class="task-name" onclick="editTask(${p.id},${t.id})">${esc(t.name)}</span>
+        <span class="task-actions"><button class="icon-btn" title="Edit" onclick="editTask(${p.id},${t.id})">✎</button></span>
+      </div>`;
+        }).join("");
+        card.innerHTML = `<div class="phase-head ${idx < 5 ? 'flow' : ''}" style="background:${p.color};--phase-color:${p.color}">${p.id}. ${esc(p.name)}</div>
+      <div class="phase-body">
+        <div class="section-label">INITIATIVES</div>
+        <div class="task-list">${tasks}</div>
+        <button class="add-btn" onclick="addTask(${p.id})">+ Add initiative</button>
+        <div class="tools"><div class="label">TOOLS / PLATFORMS</div><div class="text">${esc(p.tools)}</div></div>
+      </div>`;
+        pg.appendChild(card);
+      });
+
+      const bs = document.getElementById("bottomStatus"); bs.innerHTML = "";
+      Object.entries(data.legends).forEach(([k, v]) => {
+        bs.innerHTML += `<div class="chip" style="color:${v.color}">${esc(v.symbol)} ${c[k] || 0} ${esc(v.label)}</div>`;
+      });
+      document.getElementById("platforms").innerHTML = data.platforms.map(x => `<span class="chip">◆ ${esc(x)}</span>`).join("");
+      document.getElementById("impact").innerHTML = data.impact.map(x => `<span class="chip">◆ ${esc(x)}</span>`).join("");
+    }
+
+    function populateStatusSelect(selected) {
+      const s = document.getElementById("taskStatus"); s.innerHTML = "";
+      Object.entries(data.legends).forEach(([k, v]) => {
+        const o = document.createElement("option"); o.value = k; o.textContent = v.label; if (k === selected) o.selected = true; s.appendChild(o);
+      });
+    }
+    function addTask(phaseId) {
+      document.getElementById("taskModalTitle").textContent = "Add Initiative";
+      document.getElementById("phaseId").value = phaseId;
+      document.getElementById("taskOriginalId").value = "";
+      const p = data.phases.find(x => x.id === phaseId);
+      const next = p.tasks.length ? Math.max(...p.tasks.map(t => Number(t.id))) + 1 : phaseId * 10 + 1;
+      document.getElementById("taskId").value = next;
+      document.getElementById("taskName").value = "";
+      populateStatusSelect(Object.keys(data.legends)[0]);
+      document.getElementById("deleteTaskBtn").style.display = "none";
+      openModal("taskModal");
+    }
+    function editTask(phaseId, taskId) {
+      const p = data.phases.find(x => x.id === phaseId), t = p.tasks.find(x => String(x.id) === String(taskId));
+      document.getElementById("taskModalTitle").textContent = "Edit Initiative";
+      document.getElementById("phaseId").value = phaseId;
+      document.getElementById("taskOriginalId").value = t.id;
+      document.getElementById("taskId").value = t.id;
+      document.getElementById("taskName").value = t.name;
+      populateStatusSelect(t.status);
+      document.getElementById("deleteTaskBtn").style.display = "";
+      openModal("taskModal");
+    }
+    function saveTask() {
+      const phaseId = Number(document.getElementById("phaseId").value), p = data.phases.find(x => x.id === phaseId);
+      const original = document.getElementById("taskOriginalId").value;
+      const obj = { id: Number(document.getElementById("taskId").value), name: document.getElementById("taskName").value.trim(), status: document.getElementById("taskStatus").value };
+      if (!obj.name) { alert("Please enter an initiative name."); return }
+      if (original === "") p.tasks.push(obj);
+      else { const i = p.tasks.findIndex(x => String(x.id) === String(original)); p.tasks[i] = obj; }
+      closeModal("taskModal"); save();
+    }
+    function deleteTask() {
+      const phaseId = Number(document.getElementById("phaseId").value), original = document.getElementById("taskOriginalId").value;
+      if (!confirm("Delete this initiative?")) return;
+      const p = data.phases.find(x => x.id === phaseId); p.tasks = p.tasks.filter(x => String(x.id) !== String(original));
+      closeModal("taskModal"); save();
+    }
+    function editLegend(key) {
+      const v = data.legends[key];
+      document.getElementById("legendKey").value = key;
+      document.getElementById("legendLabel").value = v.label;
+      document.getElementById("legendColor").value = v.color;
+      document.getElementById("legendSymbol").value = v.symbol;
+      openModal("legendModal");
+    }
+    function saveLegend() {
+      const k = document.getElementById("legendKey").value;
+      data.legends[k].label = document.getElementById("legendLabel").value.trim() || data.legends[k].label;
+      data.legends[k].color = document.getElementById("legendColor").value;
+      data.legends[k].symbol = document.getElementById("legendSymbol").value || "○";
+      closeModal("legendModal"); save();
+    }
+    function openSettings() {
+      document.getElementById("settingsTitle").value = data.title;
+      document.getElementById("settingsSubtitle").value = data.subtitle;
+      document.getElementById("settingsPlatforms").value = data.platforms.join("\n");
+      document.getElementById("settingsImpact").value = data.impact.join("\n");
+      openModal("settingsModal");
+    }
+    function saveSettings() {
+      data.title = document.getElementById("settingsTitle").value.trim();
+      data.subtitle = document.getElementById("settingsSubtitle").value.trim();
+      data.platforms = document.getElementById("settingsPlatforms").value.split("\n").map(s => s.trim()).filter(Boolean);
+      data.impact = document.getElementById("settingsImpact").value.split("\n").map(s => s.trim()).filter(Boolean);
+      closeModal("settingsModal"); save();
+    }
+    function openModal(id) { document.getElementById(id).classList.add("show") }
+    function closeModal(id) { document.getElementById(id).classList.remove("show") }
+    function resetData() { if (confirm("Reset dashboard to original data?")) { data = structuredClone(INITIAL_DATA); localStorage.removeItem("stlc-dashboard-data"); render() } }
+    function exportData() {
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "stlc-dashboard-data.json"; a.click(); URL.revokeObjectURL(a.href);
+    }
+
+    let fontScale = Number(localStorage.getItem("stlc-font-scale") || "1");
+    function applyFontScale() {
+      document.documentElement.style.setProperty("--font-scale", fontScale.toFixed(2));
+    }
+    function changeFont(delta) {
+      fontScale = Math.min(1.50, Math.max(0.70, +(fontScale + delta).toFixed(2)));
+      localStorage.setItem("stlc-font-scale", String(fontScale));
+      applyFontScale();
+    }
+    function resetFont() {
+      fontScale = 1;
+      localStorage.setItem("stlc-font-scale", "1");
+      applyFontScale();
+    }
+    function printPDF() {
+      window.print();
+    }
+    function isValidImportedData(obj) {
+      return obj &&
+        typeof obj === "object" &&
+        Array.isArray(obj.phases) &&
+        obj.legends && typeof obj.legends === "object" &&
+        Array.isArray(obj.platforms) &&
+        Array.isArray(obj.impact);
+    }
+    function importData(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function () {
+        try {
+          const imported = JSON.parse(reader.result);
+          if (!isValidImportedData(imported)) {
+            alert("This JSON file does not match the STLC dashboard format.");
+            return;
+          }
+          if (!confirm("Import this JSON and replace the current dashboard data?")) return;
+          data = imported;
+          localStorage.setItem("stlc-dashboard-data", JSON.stringify(data));
+          render();
+          alert("JSON imported successfully.");
+        } catch (err) {
+          alert("Could not import JSON. Please choose a valid JSON file.");
+        } finally {
+          event.target.value = "";
+        }
+      };
+      reader.readAsText(file);
+    }
+    async function initApp() {
+      try {
+        const res = await fetch('./data.json');
+        if (res.ok) {
+          INITIAL_DATA = await res.json();
+        }
+      } catch(err) {
+        console.log("Using fallback INITIAL_DATA (data.json not found or file:// CORS)");
+      }
+      
+      data = JSON.parse(localStorage.getItem("stlc-dashboard-data") || "null") || structuredClone(INITIAL_DATA);
+      
+      applyFontScale();
+      document.querySelectorAll(".modal").forEach(m => m.addEventListener("click", e => { if (e.target === m) m.classList.remove("show") }));
+      render();
+    }
+    
+    initApp();
+  </script>
+</body>
+
+</html>

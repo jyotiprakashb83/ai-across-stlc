@@ -1,0 +1,172 @@
+{
+  "title": "AI ACROSS THE SOFTWARE TESTING LIFE CYCLE (STLC)",
+  "subtitle": "AI initiatives driving QA productivity, quality intelligence, and release confidence",
+  "phases": [
+    {
+      "id": 1,
+      "name": "REQUIREMENT ANALYSIS",
+      "color": "#5A2CA0",
+      "tools": "Jira • Confluence • BRD/PRD",
+      "tasks": [
+        { "id": 11, "name": "AI Requirement Analyzer", "status": "complete" },
+        { "id": 12, "name": "Testability Analysis", "status": "progress" },
+        { "id": 13, "name": "Acceptance Criteria Validation", "status": "idea" },
+        { "id": 14, "name": "Requirement Risk Analysis", "status": "pilot" }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "TEST PLANNING",
+      "color": "#3569C8",
+      "tools": "Jira • Release Plan • QA KB",
+      "tasks": [
+        { "id": 21, "name": "AI Test Strategy Generator", "status": "complete" },
+        { "id": 22, "name": "Scope Optimization", "status": "progress" },
+        { "id": 23, "name": "Risk-Based Planning", "status": "progress" },
+        { "id": 24, "name": "Execution Forecast", "status": "idea" }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "TEST CASE DESIGN",
+      "color": "#2F7F9A",
+      "tools": "Jira • Test Mgmt • Knowledge Base",
+      "tasks": [
+        { "id": 31, "name": "AI Test Case Generation", "status": "complete" },
+        { "id": 32, "name": "Edge Case Generation", "status": "complete" },
+        { "id": 33, "name": "Defect-Based Scenarios", "status": "progress" },
+        { "id": 34, "name": "Duplicate Test Detection", "status": "progress" },
+        { "id": 35, "name": "Traceability Matrix", "status": "pilot" }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "TEST DATA PREPARATION",
+      "color": "#4C8A3A",
+      "tools": "DB • Synthetic Data • Data Rules",
+      "tasks": [
+        { "id": 41, "name": "AI Test Data Generation", "status": "progress" },
+        { "id": 42, "name": "Dependency Analysis", "status": "progress" },
+        { "id": 43, "name": "Data Refresh Validation", "status": "complete" }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "ENVIRONMENT SETUP",
+      "color": "#6F39B5",
+      "tools": "CI/CD • APIs • Cloud",
+      "tasks": [
+        { "id": 51, "name": "Environment Readiness Agent", "status": "complete" },
+        { "id": 52, "name": "Drift Detection", "status": "progress" },
+        { "id": 53, "name": "Deployment Validation", "status": "pilot" }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "TEST EXECUTION",
+      "color": "#F28C2A",
+      "tools": "SmartTest • Playwright • CI/CD",
+      "tasks": [
+        { "id": 61, "name": "Change-Based Selection", "status": "complete" },
+        { "id": 62, "name": "Execution Planning", "status": "complete" },
+        { "id": 63, "name": "Parallel Optimization", "status": "progress" },
+        { "id": 64, "name": "Real-Time QA Health", "status": "progress" },
+        { "id": 65, "name": "Anomaly Detection", "status": "pilot" }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "DEFECT MANAGEMENT",
+      "color": "#D94A4A",
+      "tools": "Jira • Logs • Traces",
+      "tasks": [
+        { "id": 71, "name": "AI Defect Creation", "status": "complete" },
+        { "id": 72, "name": "Defect Deduplication", "status": "progress" },
+        { "id": 73, "name": "Failure Classification", "status": "progress" },
+        { "id": 74, "name": "AI Root Cause Analysis", "status": "pilot" }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "AUTOMATION",
+      "color": "#6B34BF",
+      "tools": "Playwright • Selenium • GitHub",
+      "tasks": [
+        { "id": 81, "name": "Script Generation", "status": "complete" },
+        { "id": 82, "name": "Framework-Aware Coding", "status": "progress" },
+        { "id": 83, "name": "Failure Fixing", "status": "complete" },
+        { "id": 84, "name": "Locator Healing", "status": "progress" },
+        { "id": 85, "name": "Code Review", "status": "progress" }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "REGRESSION TESTING",
+      "color": "#3366CC",
+      "tools": "Regression Suite • History • Risk Model",
+      "tasks": [
+        { "id": 91, "name": "AI Regression Selection", "status": "complete" },
+        { "id": 92, "name": "Regression Risk Analysis", "status": "progress" },
+        { "id": 93, "name": "Failure Correlation", "status": "progress" },
+        { "id": 94, "name": "Suite Optimization", "status": "pilot" }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "REPORTING & ANALYSIS",
+      "color": "#2D7F9E",
+      "tools": "Dashboard • Metrics • Teams",
+      "tasks": [
+        { "id": 101, "name": "Sprint Quality Analysis", "status": "complete" },
+        { "id": 102, "name": "Scope vs Failure Analysis", "status": "progress" },
+        { "id": 103, "name": "Quality Trend Analysis", "status": "progress" },
+        { "id": 104, "name": "Failure Pattern Mining", "status": "idea" }
+      ]
+    },
+    {
+      "id": 11,
+      "name": "RELEASE SIGN-OFF",
+      "color": "#4F8D42",
+      "tools": "Jira • Git • Test Results",
+      "tasks": [
+        { "id": 111, "name": "Release Readiness Analysis", "status": "complete" },
+        { "id": 112, "name": "Release Risk Assessment", "status": "progress" },
+        { "id": 113, "name": "Sign-off Assistant", "status": "pilot" }
+      ]
+    },
+    {
+      "id": 12,
+      "name": "CONTINUOUS QUALITY",
+      "color": "#DF4545",
+      "tools": "Prod Defects • Quality KB • Observability",
+      "tasks": [
+        { "id": 121, "name": "Production Feedback Loop", "status": "progress" },
+        { "id": 122, "name": "Quality Prediction / Early Warning", "status": "idea" }
+      ]
+    }
+  ],
+  "legends": {
+    "complete": { "label": "Production / Complete", "color": "#63A84B", "symbol": "✓" },
+    "progress": { "label": "In Progress", "color": "#356ED3", "symbol": "○" },
+    "pilot": { "label": "Pilot", "color": "#F39A35", "symbol": "○" },
+    "idea": { "label": "Idea / Not Started", "color": "#E55353", "symbol": "○" }
+  },
+  "platforms": [
+    "Jira",
+    "Confluence",
+    "GitHub",
+    "Playwright",
+    "SmartTest",
+    "CI/CD",
+    "Teams",
+    "Knowledge Base"
+  ],
+  "impact": [
+    "Earlier Risk Detection",
+    "Less Regression Effort",
+    "Faster Defect Resolution",
+    "Faster Release Validation",
+    "Reduced Manual Reporting",
+    "Evidence-Based Decisions"
+  ]
+}
